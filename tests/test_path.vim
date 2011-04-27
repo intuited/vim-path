@@ -34,3 +34,13 @@ function! s:TestMakeVimPathsNonWin()
   Assert path.MakeVimPath('o\:n\:e:two') == 'o:n:e,two'
   Assert path.MakeVimPath('o,n,e:two:three') == 'o\,n\,e,two,three'
 endfunction
+
+function! s:TestRmdir()
+  Comment 'Test removal of empty directories.'
+  let testdir = tempname()
+  Assert! !isdirectory(testdir)
+  call mkdir(testdir)
+  Assert isdirectory(testdir)
+  call g:path#path.Rmdir(testdir)
+  Assert !isdirectory(testdir)
+endfunction
