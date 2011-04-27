@@ -15,8 +15,6 @@ function! s:TestMakeVimPathsWin()
   let path.UseWindowsPaths = s:vals.True
   call path.Init()
 
-  PrettyPrint path
-
   Assert path.MakeVimPath('one') == 'one'
   Assert path.MakeVimPath('one;two;three') == 'one,two,three'
   Assert path.MakeVimPath('o,n,e;two;three') == 'o\,n\,e,two,three'
