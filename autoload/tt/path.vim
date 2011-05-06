@@ -5,10 +5,12 @@
 " The author has attempted to provide cross-platform compatibility,
 " but the addon has not been tested on systems other than linux.
 
+" TODO: Support |'shellslash'|.
+
 " Platform-specific path functionality.
 " This is kept in an object to facilitate testing.
-let path#path = {}
-let s:path = path#path
+let tt#path#path = {}
+let s:path = tt#path#path
 
   " This is (roughly) how it's done by vim
   " in `src/ex_getln.c`, function `expand_shellcmd`.
@@ -39,14 +41,14 @@ let s:path = path#path
   endfunction
 
   function! s:path.IsRelPath(path)
-    return a:path =~ '^\.\{1,2}\V' . escape(s:path.pathsep, '\')
+    return a:path =~ '^\.\{1,2}\V' . escape(self.pathsep, '\')
   endfunction
 
   " Makes a comma-delimited path from a system path.
   function! s:path.MakeVimPath(syspath)
-    let paths = escape#SplitOnUnescaped(a:syspath,
+    let paths = tt#escape#SplitOnUnescaped(a:syspath,
           \                                     self.pathdelim)
-    let paths = map(paths, 'escape#Unescape(v:val, self.pathdelim)')
+    let paths = map(paths, 'tt#escape#Unescape(v:val, self.pathdelim)')
     let paths = map(paths, 'escape(v:val, '','')')
     return join(paths, ',')
   endfunction
@@ -56,9 +58,35 @@ let s:path = path#path
     return join(a:parts, self.pathsep)
   endfunction
 
+  function! s:path.Split(parts)
+    return split(a:parts, self.pathsep)
+  endfunction
+
+  " TODO Find out how portable this is.
   function! s:path.Rmdir(dirname)
     call system('rmdir ' . shellescape(a:dirname))
   endfunction
 
-call s:path.Init()
+  " Validate a single component of a filename.
+  " It cannot include path separators (slashes)
+  " and must not be the representation of the current or parent directory.
+  " Throws exceptions if any invalidity is detected.
+  " Returns 1 if the filename is valid.
+  function! s:path.ValidateFilename(filename)
+    if stridx(a:filename, self.pathsep) > -1
+      throw printf('FileError: path %s contains directory separator.',
+            \      string(a:filename))
+    endif
 
+    if a:filename == '.' || a:filename == '..'
+      throw printf("FileError: Cannot use '.' or '..' as file names.")
+    endif
+
+    if a:filename == ''
+      throw printf("FileError: Cannot use empty file name.")
+    endif
+
+    return 1
+  endfunction
+
+call s:path.Init()

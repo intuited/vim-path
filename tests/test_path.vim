@@ -11,7 +11,7 @@ endfunction
 function! s:TestMakeVimPathsWin()
   Comment 'Test creation of comma-delimited paths'
         \ .' from `;`-delimited system paths.'
-  let path = copy(g:path#path)
+  let path = copy(g:tt#path#path)
   let path.UseWindowsPaths = s:vals.True
   call path.Init()
 
@@ -23,7 +23,7 @@ endfunction
 function! s:TestMakeVimPathsNonWin()
   Comment 'Test creation of comma-delimited paths'
         \ .' from `:`-delimited system paths.'
-  let path = copy(g:path#path)
+  let path = copy(g:tt#path#path)
   let path.UseWindowsPaths = s:vals.False
   call path.Init()
 
@@ -39,6 +39,6 @@ function! s:TestRmdir()
   Assert! !isdirectory(testdir)
   call mkdir(testdir)
   Assert isdirectory(testdir)
-  call g:path#path.Rmdir(testdir)
+  call g:tt#path#path.Rmdir(testdir)
   Assert !isdirectory(testdir)
 endfunction
