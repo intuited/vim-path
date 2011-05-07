@@ -1,4 +1,8 @@
 { "name": "tt_path",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/intuited/vim-path.git"
+  },
   "version": "0.1",
   "author": "Ted Tibbetts",
   "description": "General-purpose routines for path manipulation.",
