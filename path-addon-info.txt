@@ -10,6 +10,6 @@
     "tt_escape": {
       "type": "git",
       "url": "http://github.com/intuited/vim-escape.git"
-    },
+    }
   }
 }
