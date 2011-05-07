@@ -1,9 +1,9 @@
-{ "name": "path",
+{ "name": "tt_path",
   "version": "0.1",
   "author": "Ted Tibbetts",
   "description": "General-purpose routines for path manipulation.",
   "dependencies": {
-    "escape": {
+    "tt_escape": {
       "type": "git",
       "url": "http://github.com/intuited/vim-escape.git"
     },
